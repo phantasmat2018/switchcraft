@@ -1,34 +1,47 @@
 # Switchcraft
 
 Switchcraft (*switch* + *witchcraft*) — перемикач розкладки клавіатури для Windows. Виправляє текст,
-набраний не в тій розкладці (`ghbdtn` → `привет`, `руддщ` → `hello`), гарячими клавішами або
-автоматично під час набору. Мови: англійська, українська, російська.
+набраний не в тій розкладці (`ghbdtn` → `привет`, `руддщ` → `hello`), гарячими клавішами
+(`Pause` — слово, `Ctrl+Pause` — рядок, `Shift+Pause` — виділене) або автоматично під час набору.
+Мови: англійська, українська, російська.
 
-## Завантаження
+## Встановлення
 
-Сторінка [Releases](https://github.com/phantasmat2018/switchcraft/releases):
+1. Завантажте **`SwitchcraftSetup.exe`** з [останнього релізу](https://github.com/phantasmat2018/switchcraft/releases)
+   і запустіть. Потрібен лише .NET Framework 4.8 (він є в Windows 10/11), права адміністратора не потрібні.
+   Windows може показати «Windows protected your PC» — програма не підписана сертифікатом:
+   **More info → Run anyway**.
+2. У вікні можна ввімкнути автозапуск, ярлик на Робочому столі і **локальну модель Laya** (визначення мови
+   прямо на ПК, див. нижче). Програма ставиться в `%LOCALAPPDATA%\Programs\Switchcraft` і одразу запускається
+   (іконка в треї).
 
-- **`Switchcraft.exe`** — сама програма (один файл, потрібен лише .NET Framework 4.8, який є в Windows 10/11).
-- **`switchcraft-laya-r3.zip`** — локальна модель Laya (≈600 МБ). Вручну її завантажувати не треба:
-  програма робить це сама (див. нижче).
+Без вікон: `SwitchcraftSetup.exe --quiet [--no-autostart] [--desktop] [--laya]`.
+
+**Оновлення:** меню трею → **Check for updates…** (програма звертається до GitHub лише тоді).
+**Видалення:** Settings → Apps → Switchcraft → Uninstall — прибирає програму, ярлики, автозапуск, а також
+(за замовчуванням) модель Laya і налаштування.
+
+## Як визначається мова
+
+- **Без AI:** якщо на ПК встановлено TypeSwitcher, Switchcraft приймає рішення так само, як він, за його
+  файлом правил; інакше працює простіша вбудована евристика.
+- **AI** (Settings → Detect language with AI): TypeSafe Jev або Cloudflare Clef (хмара, потрібен ключ) чи
+  **локальна модель Laya** (на вашому ПК, текст нікуди не надсилається).
 
 ## Локальна модель Laya
 
-Laya визначає, якою мовою ви пишете, прямо на вашому ПК — набраний текст нікуди не надсилається.
-
-Встановлення на будь-якому ПК: **Settings → Detect language with AI → Configure… → Provider: Local
+Ставиться інсталятором або пізніше: **Settings → Detect language with AI → Configure… → Provider: Local
 model (Laya, on this PC) → Install**. Switchcraft сам:
 
 1. завантажує модель із релізу [`laya-r3`](https://github.com/phantasmat2018/switchcraft/releases/tag/laya-r3)
-   і перевіряє її контрольну суму;
+   (≈600 МБ) і перевіряє її контрольну суму;
 2. завантажує [uv](https://github.com/astral-sh/uv) і ставить через нього окремий Python 3.12;
 3. ставить PyTorch 2.14.1 — з CUDA, якщо є відеокарта NVIDIA (≈2,5 ГБ), інакше версію для процесора
    (≈250 МБ) — і пакети з [`laya-requirements.txt`](laya/laya-requirements.txt) (Laya 0.4.1 з сервером);
 4. прописує шляхи в налаштуваннях і перевіряє, що модель відповідає.
 
-Усе лягає в `%LOCALAPPDATA%\Switchcraft\Laya` (близько 4 ГБ з CUDA, 1,5 ГБ без неї), нічого не
-змінюючи в системі. Сервер (`laya-serve`) Switchcraft запускає сам, лише поки вибрано цю модель, і
-закриває разом із собою.
+Усе лягає в `%LOCALAPPDATA%\Switchcraft\Laya` (близько 5 ГБ з CUDA, 1,5 ГБ без неї), нічого не змінюючи в
+системі. Сервер (`laya-serve`) Switchcraft запускає сам, лише поки вибрано цю модель, і закриває разом із собою.
 
 Вручну (те саме, що робить кнопка):
 
