@@ -1,0 +1,17 @@
+Switchcraft local model (Laya, round 3)
+======================================
+
+A layout/language decision model for Switchcraft: given a line typed on the keyboard and its readings
+in the installed layouts (English, Ukrainian, Russian), it answers which reading each word was meant
+in and which language the line is in. It is served on this PC by `laya-serve` (Laya 0.4.1); nothing
+typed leaves the computer.
+
+Made from:
+- Encoder: jhu-clsp/mmBERT-base — https://huggingface.co/jhu-clsp/mmBERT-base — MIT License.
+- Training and serving code: Laya 0.4.1 by ConvAI Innovations — https://huggingface.co/convaiinnovations/laya
+  — Apache License 2.0.
+- Training sentences: Tatoeba (https://tatoeba.org), CC BY 2.0 FR, turned into wrong-layout typing
+  examples by Switchcraft's own generator.
+
+Files: model.safetensors (weights), encoder/ and tokenizer/ (mmBERT configuration and tokenizer),
+questions.json, rl_agent_config.json, train_report.json (98.4% accuracy on its evaluation set).
